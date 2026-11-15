@@ -1,0 +1,69 @@
+import type { Metadata } from "next";
+import { SITE } from "@/lib/site";
+
+type PageMetadataInput = {
+  title: string;
+  description: string;
+  path: string;
+  openGraphType?: "website" | "article";
+  openGraphTitle?: string;
+  publishedTime?: string;
+  section?: string;
+};
+
+export function createPageMetadata({
+  title,
+  description,
+  path,
+  openGraphType = "website",
+  openGraphTitle,
+  publishedTime,
+  section,
+}: PageMetadataInput): Metadata {
+  const fullTitle = `${title} | ${SITE.name}`;
+  const pageUrl = SITE.origin ? new URL(path, SITE.origin).toString() : undefined;
+  const imageUrl = SITE.origin ? new URL("/og-image", SITE.origin).toString() : undefined;
+  const commonOpenGraph = {
+    siteName: SITE.name,
+    locale: SITE.locale.replace("_", "-"),
+    title: openGraphTitle ?? fullTitle,
+    description,
+    ...(pageUrl ? { url: pageUrl } : {}),
+    ...(imageUrl
+      ? {
+          images: [
+            {
+              url: imageUrl,
+              width: 1200,
+              height: 630,
+              alt: SITE.seo.socialImageAlt,
+            },
+          ],
+        }
+      : {}),
+  };
+
+  const openGraph =
+    openGraphType === "article"
+      ? {
+          ...commonOpenGraph,
+          type: "article" as const,
+          ...(publishedTime ? { publishedTime } : {}),
+          ...(section ? { section } : {}),
+        }
+      : { ...commonOpenGraph, type: "website" as const };
+
+  return {
+    ...(SITE.origin ? { metadataBase: new URL(SITE.origin) } : {}),
+    title: { absolute: fullTitle },
+    description,
+    ...(pageUrl ? { alternates: { canonical: pageUrl } } : {}),
+    openGraph,
+    twitter: {
+      card: "summary_large_image",
+      title: openGraphTitle ?? fullTitle,
+      description,
+      ...(imageUrl ? { images: [imageUrl] } : {}),
+    },
+  };
+}
