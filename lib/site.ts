@@ -24,32 +24,32 @@ const publicOrigin = resolvePublicOrigin(configuredOrigin);
 
 export const SITE = {
   name: "Zorvaxel",
-  shortDescription: "Private label serum manufacturing and contract filling in Chennai.",
+  shortDescription: "Ready-formula serum branding, filling and packaging in Chennai.",
   tagline: "Your serum, in your name, at any batch size.",
   description:
-    "We formulate, fill, label and pack serums for startups and small brands. Launch with as few as 50 bottles.",
+    "We supply ready serum formulas, then fill, label and pack them under your brand. Start with the quantity you actually need.",
   origin: publicOrigin,
   locale: "en_IN",
   seo: {
     home: {
       title: "Private label serum manufacturer in Chennai",
-      description: "Small-batch serum formulation, filling, labels and packaging for startups and growing skincare brands in Chennai.",
+      description: "Ready-formula serums filled, labelled and packed under your brand. No MOQ on most services. For founders, doctors and growing brands.",
     },
     services: {
-      title: "Low-MOQ serum manufacturing services",
-      description: "Private label formulation, custom packaging, contract filling, labels and small-batch serum finishing in Chennai.",
+      title: "Serum branding and filling services — no MOQ",
+      description: "Ready formulas, contract filling, custom packaging, label design and stamping for serums. Start without a minimum order on most services.",
     },
     about: {
-      title: "About the Chennai serum lab",
-      description: "Meet a small-batch serum manufacturing and contract filling partner in Chennai, and learn how the team works with emerging skincare brands.",
+      title: "About Zorvaxel — Chennai serum lab",
+      description: "A small-batch serum filling and packaging partner in Chennai, working with brands, doctors and clinics at any batch size.",
     },
     blog: {
-      title: "Serum formulation and packaging notes",
-      description: "Plain-English notes on launching a serum brand, private label, contract filling, formulation and packaging.",
+      title: "Serum packaging and brand notes",
+      description: "Plain-English notes on launching a serum brand: private label, contract filling, packaging and labels.",
     },
     contact: {
-      title: "Contact a serum manufacturer in Chennai",
-      description: "Tell the Chennai serum manufacturing team about your formula, service needs and expected batch size.",
+      title: "Contact — serum manufacturing enquiry",
+      description: "Send a brief about your formula, quantity and packaging needs. We reply within one working day.",
     },
     notFound: {
       title: "Page not found",
@@ -62,7 +62,6 @@ export const SITE = {
     { label: "Services", href: "/services" },
     { label: "About", href: "/about" },
     { label: "Blog", href: "/blog" },
-    { label: "Contact", href: "/contact" },
   ],
   ui: {
     enquire: "Enquire",
@@ -106,35 +105,35 @@ export const SITE = {
   },
   footer: {
     description:
-      "A small-batch serum manufacturing and contract filling partner for emerging skincare brands.",
+      "Small-batch serum filling and packaging for founders, doctors and growing brands. Based in Chennai.",
     exploreLabel: "Explore",
     links: [
       { label: "Services", href: "/services" },
       { label: "About", href: "/about" },
       { label: "Notes", href: "/blog" },
-      { label: "Contact", href: "/contact" },
+      { label: "Batch Enquiry", href: "/contact" },
     ],
     copyright: "Small batches. Clear answers. Careful work.",
   },
   home: {
     hero: {
       label: "PRIVATE LABEL SERUM MANUFACTURER · CHENNAI",
-      title: "Your serum, in your name, at any batch size.",
+      title: "Your first serum batch, without the minimum\u2011order trap.",
       supporting:
-        "We formulate, fill, label and pack. You launch with as few as 50 bottles.",
-      primaryAction: "Start your serum",
-      secondaryAction: "See our services",
+        "We supply ready-to-brand serum formulas, then fill, label and pack them for you. Start with the quantity you actually need — not the one a factory forces on you.",
+      primaryAction: "Start your first batch",
+      secondaryAction: "See how it works",
       spec: "30 ML · AMBER GLASS · DROPPER",
       panelNote: "01 / FIRST BATCH",
     },
     marquee: [
       "NO MOQ",
-      "FORMULATION",
+      "READY FORMULAS",
       "FILLING",
       "LABELS",
       "CARTONS",
     ],
-    servicesHeading: "A small run, done properly.",
+    servicesHeading: "From ready formula to finished bottle — or just the part you need.",
     servicesLink: "All services",
     processHeading: "From first note to finished bottle.",
     processDescription: "A few clear decisions, then a finished batch you can take to market.",
@@ -142,42 +141,42 @@ export const SITE = {
       {
         number: "01",
         title: "Brief",
-        description: "Tell us what you have in mind and the quantity you need.",
+        description: "Tell us what you want, your expected quantity, and whether you'll use one of our formulas or bring your own.",
       },
       {
         number: "02",
-        title: "Formulate",
-        description: "Choose a ready formula or work through a new one with us.",
+        title: "Choose or send",
+        description: "Pick a ready formula from our range, or send us your own serum to fill.",
       },
       {
         number: "03",
         title: "Fill & pack",
-        description: "We fill, label and pack your serum with care.",
+        description: "We fill, cap, seal and pack your serum with care.",
       },
       {
         number: "04",
         title: "Deliver",
-        description: "Your finished batch is ready to take to market.",
+        description: "Your finished batch is labelled, packed and ready to take to market.",
       },
     ],
     noMoq: {
       label: "SMALL BATCHES WELCOME",
       title:
-        "Most factories ask for 5,000 units. We start at one batch you can afford.",
+        "Many manufacturers set minimums in the thousands. We start at whatever you can afford to test.",
       action: "Talk to us about quantity",
     },
     journalHeading: "Notes for the first run.",
     journalLink: "All notes",
     closing: {
-      title: "Have a formula, or need one?",
-      action: "Enquire with us",
+      title: "Have a formula already? Want to use one of ours?",
+      action: "Start your first batch",
     },
   },
   services: {
     eyebrow: "WHAT WE CAN HELP WITH",
     title: "Services",
     introduction:
-      "Choose the help you need, from a ready-to-fill first batch to finishing and packaging a formula you already have.",
+      "You don't need to develop a formula from scratch or commit to a factory minimum. Pick the stage you need — or use all five together.",
     detailLabels: {
       whoFor: "Who it's for",
       included: "What's included",
@@ -185,16 +184,16 @@ export const SITE = {
     items: [
       {
         number: "01",
-        title: "Formulation with ready packaging",
+        title: "Ready formulas, your brand",
         shortDescription:
-          "A serum formula filled into packaging we already stock, such as a 30 ml dropper bottle.",
+          "Choose from our ready serum formulas and we fill them into packaging we already stock. No minimum order.",
         description:
-          "We create the serum formula and fill it into packaging we already stock, such as 30 ml dropper bottles. Nothing custom needs to be produced, so you can order small.",
-        whoFor: "Startups testing a first product.",
+          "You don't need to develop a formula from scratch. Pick a serum from our range — brightening, hydration, barrier repair, anti-ageing — and we fill it into stocked bottles under your brand. Because the formula is ready and the packaging is in stock, there's no minimum order. Launch with a batch you can afford to test.",
+        whoFor: "First-time founders who want to launch quickly. Brands validating a concept before committing to custom packaging.",
         included: [
-          "Serum formulation",
-          "Filling into stocked packaging",
-          "Standard bottle and dropper options",
+          "Choice of ready serum formulas",
+          "Filling into stocked dropper bottles",
+          "Standard glass and cap options",
         ],
         moq: "No MOQ",
         illustration: "dropper",
@@ -203,12 +202,12 @@ export const SITE = {
         number: "02",
         title: "Custom packaging",
         shortDescription:
-          "A formula and package selected around your brand, with a small minimum run.",
+          "The same ready formulas, filled into packaging made to your brand. A small minimum run applies.",
         description:
-          "The same formulation service, with packaging made for your brand: bottle colour, cap and dropper style, printing and finish. Custom packaging needs a small minimum run.",
-        whoFor: "Brands ready to make their packaging their own.",
+          "Same ready formulas as Service 01, with packaging made for your brand: bottle colour, cap and dropper style, printing and finish. Because custom packaging has a minimum run set by the packaging supplier, a small MOQ applies — far lower than a standard contract manufacturer would ask for.",
+        whoFor: "Brands ready to make their packaging their own. Clinics and doctors building a named product line.",
         included: [
-          "Serum formulation",
+          "Choice of ready serum formulas",
           "Bottle colour and finish selection",
           "Cap, dropper style and printing options",
         ],
@@ -219,10 +218,10 @@ export const SITE = {
         number: "03",
         title: "Contract filling and packaging",
         shortDescription:
-          "Bring a ready serum; we fill, cap, seal, pack and return it finished.",
+          "Bring your own ready serum. We fill it, cap it, seal it and pack it — then return the finished batch.",
         description:
-          "You bring your own ready serum. We fill it into bottles or airless pumps, cap, seal and pack it, then return it finished.",
-        whoFor: "Brands, doctors and labs with a formula but no filling setup.",
+          "You supply the finished serum. We take it from there: filling into dropper bottles or airless pumps, capping, sealing and packing. We don't formulate here — this is for clients who already have a formula but no filling setup. Priced per unit or per batch, so small quantities work.",
+        whoFor: "Brands, doctors, dermatologists and labs with an existing formula but no filling equipment or staff.",
         included: [
           "Filling into bottles or airless pumps",
           "Capping and sealing",
@@ -235,10 +234,10 @@ export const SITE = {
         number: "04",
         title: "Label and outer carton design",
         shortDescription:
-          "Clear layouts for your bottle label and carton, charged per design.",
+          "Print-ready layouts for your bottle label and carton — ingredients, usage text and barcode included. Charged per design.",
         description:
-          "We lay out your branding, ingredients and usage text, and barcode placement for the bottle label and outer carton. This is charged per design, not per quantity.",
-        whoFor: "Founders preparing product information and packaging artwork.",
+          "A clean, print-ready design for your bottle label and outer carton. We handle the layout, typeset the ingredients and usage copy you supply, and place the barcode correctly for your printer. Charged as a flat fee per design — the same whether you're printing 50 or 5,000 units.",
+        whoFor: "New brands without a designer. Any founder who wants one less supplier to manage.",
         included: [
           "Bottle label layout",
           "Outer carton layout",
@@ -249,76 +248,108 @@ export const SITE = {
       },
       {
         number: "05",
-        title: "Label stamping",
+        title: "Label stamping and application",
         shortDescription:
-          "Finished labels applied to bottles and cartons in small quantities.",
+          "Your printed labels applied to bottles and cartons, neatly, in any quantity. Gold and silver foil stamping available.",
         description:
-          "We apply finished labels to bottles and cartons in small quantities. Hot-foil stamping is available on request.",
-        whoFor: "Brands that need careful finishing for a small batch.",
+          "You've had labels printed. We apply them to bottles and cartons carefully, in batches of any size — no bubbles, no skew. Hot-foil stamping in gold or silver is available on request for a premium finish.",
+        whoFor: "Brands that have labels ready but no equipment or staff to apply them. Any client wanting a foil finish.",
         included: [
           "Label application on bottles",
           "Label application on cartons",
-          "Hot-foil stamping on request",
+          "Hot-foil stamping on request (gold or silver)",
         ],
         moq: "No MOQ",
         illustration: "label-sheet",
       },
     ],
     decisionGuide: {
-      eyebrow: "A SIMPLE START",
-      title: "Which service do I need?",
-      needLabel: "What you need",
+      eyebrow: "NOT SURE WHERE TO START?",
+      title: "Which service do you need?",
+      needLabel: "Your situation",
       answerLabel: "Start here",
       rows: [
-        { need: "I need a formula", answer: "01 or 02" },
-        { need: "I have a formula", answer: "03" },
-        { need: "I need branding", answer: "04 and 05" },
+        {
+          need: "I want a ready-made formula",
+          answer: "Ready formulas · Services 01 & 02",
+          href: "/services#service-01",
+        },
+        {
+          need: "I already have a serum",
+          answer: "Contract filling · Service 03",
+          href: "/services#service-03",
+        },
+        {
+          need: "I need label and carton design",
+          answer: "Design & application · Services 04 & 05",
+          href: "/services#service-04",
+        },
       ],
-      action: "Tell us what you need",
+      action: "Start your first batch",
     },
-    faqHeading: "A few practical questions",
+    faqHeading: "Practical questions about small-batch serum production",
     faq: [
       {
-        question: "Can I start with a small batch?",
-        answer: "Services marked No MOQ are available without a minimum order quantity for that service. Custom packaging is marked Low MOQ because the packaging choice needs a small minimum. Share your planned quantity so we can discuss the right option.",
+        question: "Can I really start without a minimum order quantity (MOQ)?",
+        answer: "Yes. Services 01, 03, 04 and 05 have no minimum order quantity — you can launch with a test run of 50 or 100 units. Service 02 (custom packaging) carries a low MOQ because external bottle manufacturers require minimum runs for custom glass colors, but it is far lower than standard contract factories.",
       },
       {
-        question: "What if I already have a serum formula?",
-        answer: "Contract filling and packaging is for brands, doctors and labs with a ready serum but no filling setup. We can fill it into bottles or airless pumps, cap, seal and pack it, then return the finished batch.",
+        question: "How is pricing structured for small batches?",
+        answer: "Pricing is transparent and itemized with no hidden setup fees. For ready formulas (Service 01), you pay per filled bottle. For contract filling (Service 03), you pay per unit or per filling batch. Label and carton artwork (Service 04) is a one-time fixed design fee. We provide an exact per-bottle landed quote before you commit.",
       },
       {
-        question: "What if I need a formula?",
-        answer: "Choose formulation with ready packaging when stocked packaging suits your first run, or ask about custom packaging if you need bottle colour, a particular cap or printing for your brand.",
+        question: "What are your typical turnaround and lead times?",
+        answer: "For ready formulas filled into our stocked bottles (Service 01), lead time is 7 to 10 working days once your labels are approved. Contract filling of your existing serum (Service 03) takes 5 to 7 working days. Custom packaging runs (Service 02) take 3 to 4 weeks depending on the packaging supplier.",
+      },
+      {
+        question: "What if I already have my own serum formulation?",
+        answer: "Service 03 — contract filling and packaging — is built specifically for brands, dermatologists, and clinics that already have a tested formulation. You ship the bulk serum to our Chennai facility; we fill, seal, cap, lot-code, label, and pack it under cleanroom conditions.",
+      },
+      {
+        question: "Who owns the formulation, brand rights, and IP?",
+        answer: "You retain 100% ownership of your brand name, trademarks, packaging design, and customer data. If you supply your own formula (Service 03), your IP is strictly protected under non-disclosure. If you use our ready formulas (Services 01 & 02), you hold unencumbered rights to sell under your private label without royalties.",
+      },
+      {
+        question: "Do you help with Indian cosmetic regulatory compliance and CDSCO labelling?",
+        answer: "Yes. We guide you through mandatory Indian cosmetic labelling standards: ingredient declarations following international INCI nomenclature, batch numbering, manufacturing license disclosures, MRP printing, net content declarations, and safety directions.",
+      },
+      {
+        question: "What do you need from me to provide a quote?",
+        answer: "Three simple details: which type of formula you want (or whether you're supplying your own), your packaging vision (dropper bottle, airless pump, carton), and your initial batch quantity (e.g. 50, 200, 500 units).",
+      },
+      {
+        question: "Where are you based and how do you ship finished orders?",
+        answer: "Our formulation and packing facility is in Chennai. We ship nationwide across India using insured freight and express courier partners in heavy-duty protective cartons. Local brand founders are also welcome to arrange pickup directly from our facility.",
       },
     ],
   },
   about: {
     eyebrow: "A SMALL, PRACTICAL PARTNER",
-    title: "A small lab with a simple idea.",
+    title: "We handle the production. You focus on the brand.",
     storyHeading: "Why we started",
     story:
       "[Add the owner's story here: why the lab began, who it serves, and what the team wants small skincare brands to know. Replace this note with the owner's own words.]",
-    principlesHeading: "How we work",
+    principlesHeading: "The things we won't compromise on.",
     principles: [
       {
         number: "01",
-        title: "Small batches welcome",
-        description: "A first run can be small while you learn what customers want.",
+        title: "Start with what makes sense",
+        description: "Most of our services have no minimum order. You shouldn't have to over-order just to get started.",
       },
       {
         number: "02",
-        title: "Honest pricing",
-        description: "We explain what affects the quote before work begins.",
+        title: "One point of contact",
+        description: "Formula, filling, labels and cartons — all co-ordinated through us. One conversation instead of four suppliers.",
       },
       {
         number: "03",
-        title: "Clear communication",
-        description: "You know what we need from you and what happens next.",
+        title: "Pay only for what you need",
+        description: "Come in at any stage: ready formulas, filling, design or finishing. We don't bundle what you don't need.",
       },
       {
         number: "04",
-        title: "Careful quality checks",
-        description: "We check the details through filling, finishing and packing.",
+        title: "Small-batch discipline",
+        description: "Small-batch work requires more attention per unit, not less. We've built our process around that.",
       },
     ],
     processHeading: "A clear route through the work.",
@@ -332,11 +363,12 @@ export const SITE = {
     valuesCopy:
       "We keep the process understandable. We tell you what is ready, what needs a decision, and what can wait until your next batch.",
     closing: "Have a question about your first batch?",
+    closingAction: "Start your first batch",
   },
   blog: {
-    eyebrow: "PLAIN NOTES FOR THE FIRST RUN",
+    eyebrow: "PLAIN NOTES FOR FIRST-TIME FOUNDERS",
     title: "Notes",
-    introduction: "Practical answers on formulation, packaging and getting a first serum batch ready.",
+    introduction: "No jargon. Practical answers about packaging, labels and getting your first serum batch ready to sell.",
     categories: ["Launching a brand", "Formulation", "Packaging", "Labels"],
     allCategory: "All notes",
     categoryFilterLabel: "Filter notes by topic",
@@ -351,13 +383,13 @@ export const SITE = {
     eyebrow: "START WITH A CONVERSATION",
     title: "Tell us about your serum.",
     introduction:
-      "Share what you are planning, what you already have, and the quantity you are considering. We will help you find the right next step.",
-    formHeading: "A few details to get started",
-    detailsHeading: "Talk to the lab",
+      "Share what you're planning, what you already have, and roughly how many units you're thinking. We'll come back within one working day with a clear next step — no jargon, no sales script.",
+    formHeading: "Tell us what you're planning",
+    detailsHeading: "Direct lab contact & location",
     responseTime: "We reply within one working day.",
-    successTitle: "Thank you for getting in touch.",
+    successTitle: "Your enquiry is with us.",
     successCopy:
-      "Your enquiry is with us. We will review the details and reply within one working day with a clear next step.",
+      "We'll review the details and come back within one working day with a clear next step.",
     labels: {
       name: "Your name",
       phone: "Phone number",
@@ -373,7 +405,7 @@ export const SITE = {
       email: "Where should we reply?",
       service: "Choose the help you need",
       quantity: "Select a range",
-      message: "Share your formula, idea, and any timing or packaging questions.",
+      message: "Share your formula or tell us which of our serums interests you, plus any timing or packaging questions.",
     },
     validation: {
       nameRequired: "Please enter your name.",

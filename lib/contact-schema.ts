@@ -14,10 +14,11 @@ export const enquirySchema = z.object({
   phone: z
     .string()
     .trim()
-    .min(7, copy.phoneRequired)
     .max(25, copy.phoneInvalid)
-    .refine((phone) => phone.replace(/\D/g, "").length >= 7, copy.phoneInvalid)
-    .regex(/^\+?[\d\s().-]+$/, copy.phoneInvalid),
+    .refine((phone) => !phone || phone.replace(/\D/g, "").length >= 7, copy.phoneInvalid)
+    .refine((phone) => !phone || /^\+?[\d\s().-]+$/.test(phone), copy.phoneInvalid)
+    .optional()
+    .default(""),
   email: z
     .string()
     .trim()

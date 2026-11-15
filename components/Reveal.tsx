@@ -1,8 +1,7 @@
 "use client";
 
-import { motion, useReducedMotion } from "framer-motion";
-import type { ReactNode } from "react";
-import { EDITORIAL_EASE, MOTION_TIMING, motionDuration } from "@/lib/animations";
+import { useEffect, useRef, useState } from "react";
+import type { CSSProperties, ReactNode } from "react";
 
 type RevealProps = {
   children: ReactNode;
@@ -12,40 +11,53 @@ type RevealProps = {
   as?: "div" | "section" | "article";
 };
 
+function useRevealOnce() {
+  const ref = useRef<HTMLDivElement>(null);
+  const [revealed, setRevealed] = useState(false);
+
+  useEffect(() => {
+    const element = ref.current;
+    if (!element) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (!entry.isIntersecting) return;
+        setRevealed(true);
+        observer.unobserve(element);
+      },
+      { rootMargin: "0px 0px -10% 0px", threshold: 0 },
+    );
+
+    observer.observe(element);
+    return () => observer.disconnect();
+  }, []);
+
+  return { ref, revealed };
+}
+
+function revealClass(className: string | undefined, revealed: boolean) {
+  return [className, "scroll-reveal", revealed ? "is-revealed" : ""]
+    .filter(Boolean)
+    .join(" ");
+}
+
 export function Reveal({
   children,
   className,
   delay = 0,
-  staggerChildren = MOTION_TIMING.childStaggerSeconds,
   as = "div",
 }: RevealProps) {
-  const reduceMotion = useReducedMotion();
-  const Component = as === "section" ? motion.section : as === "article" ? motion.article : motion.div;
-  const variants = {
-    hidden: { opacity: 0, y: reduceMotion ? 0 : 16 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: {
-        duration: motionDuration(Boolean(reduceMotion), MOTION_TIMING.revealSeconds),
-        delay,
-        staggerChildren: reduceMotion ? 0 : staggerChildren,
-        ease: EDITORIAL_EASE,
-      },
-    },
-  };
+  const { ref, revealed } = useRevealOnce();
+  const classes = revealClass(className, revealed);
+  const style = { "--reveal-delay": `${delay}s` } as CSSProperties;
 
-  return (
-    <Component
-      className={className}
-      initial="hidden"
-      whileInView="visible"
-      variants={variants}
-      viewport={{ once: true, amount: 0.15 }}
-    >
-      {children}
-    </Component>
-  );
+  if (as === "section") {
+    return <section className={classes} ref={ref} style={style}>{children}</section>;
+  }
+  if (as === "article") {
+    return <article className={classes} ref={ref} style={style}>{children}</article>;
+  }
+  return <div className={classes} ref={ref} style={style}>{children}</div>;
 }
 
 export function RevealItem({
@@ -55,23 +67,10 @@ export function RevealItem({
   children: ReactNode;
   className?: string;
 }) {
-  const reduceMotion = useReducedMotion();
+  const { ref, revealed } = useRevealOnce();
   return (
-    <motion.div
-      className={className}
-      variants={{
-        hidden: { opacity: 0, y: reduceMotion ? 0 : 16 },
-        visible: {
-          opacity: 1,
-          y: 0,
-          transition: {
-            duration: motionDuration(Boolean(reduceMotion), MOTION_TIMING.revealSeconds),
-            ease: EDITORIAL_EASE,
-          },
-        },
-      }}
-    >
+    <div className={revealClass(className, revealed)} ref={ref}>
       {children}
-    </motion.div>
+    </div>
   );
 }

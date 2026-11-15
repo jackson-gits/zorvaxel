@@ -2,6 +2,7 @@ import { Instrument_Sans, Instrument_Serif } from "next/font/google";
 import { Footer } from "@/components/Footer";
 import { Header } from "@/components/Header";
 import { WhatsAppFloat } from "@/components/WhatsAppFloat";
+import { SmoothScroll } from "@/components/motion/SmoothScroll";
 import { SITE } from "@/lib/site";
 import { createPageMetadata } from "@/lib/seo";
 import "./globals.css";
@@ -40,6 +41,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${instrumentSans.variable} ${instrumentSerif.variable}`}>
+        <SmoothScroll />
         <a className="skip-link" href="#main-content">
           {SITE.ui.skipToContent}
         </a>

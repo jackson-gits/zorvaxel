@@ -47,7 +47,6 @@ export default function AboutPage() {
           <Reveal>
             <SectionHeader
               description={SITE.about.processDescription}
-              number="02"
               title={SITE.about.processHeading}
               titleId="about-process-title"
             />
@@ -78,14 +77,16 @@ export default function AboutPage() {
       </section>
 
       <section aria-labelledby="about-values-title" className="page-section about-values">
-        <div className="page-shell about-values__inner">
+        <div className="page-shell about-values__inner surface-dark">
           <Reveal>
             <p className="eyebrow">{SITE.about.valuesEyebrow}</p>
             <h2 id="about-values-title">{SITE.about.valuesHeading}</h2>
-            <p>{SITE.about.valuesCopy}</p>
-            <Button href={SITE.ui.enquireHref}>{SITE.about.closing}</Button>
+            <p className="about-values__copy">{SITE.about.valuesCopy}</p>
+            <div className="about-values__action">
+              <p className="about-values__prompt">{SITE.about.closing}</p>
+              <Button href={SITE.ui.enquireHref}>{SITE.about.closingAction}</Button>
+            </div>
           </Reveal>
-          <span aria-hidden="true" className="about-values__mark">{SITE.name.slice(0, 1)}</span>
         </div>
       </section>
     </main>

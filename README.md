@@ -8,13 +8,14 @@ Designed following restrained editorial laboratory aesthetics with verified WCAG
 
 | Role | Colour | Hex / Value | Purpose | Contrast Ratio |
 | :--- | :--- | :--- | :--- | :--- |
-| **Page background** | Cannoli Cream | `#F2EDE1` | Primary canvas & light surfaces | — |
-| **Main text & dark sections** | Pine Grove | `#1F3B34` | Headings, body text, dark feature bands | 10.37:1 on Cannoli Cream |
-| **Primary accent** | Terracotta Clay | `#C86A4A` | Interactive buttons, key UI details | 3.2:1 (Large text / UI components) |
-| **Accent for links & small text** | Darker terracotta | `#A64A2B` | Text links, active indicators, small accents | 4.94:1 on Cannoli Cream (WCAG AA) |
-| **Soft panels & illustrations** | Sage Whisper | `#A3B18A` (`rgba(163, 177, 138, 0.32)`) | Illustration backdrops, specimen cards, guide panels | 8.08:1 (Pine Grove text on tint) |
-| **Hairlines** | Pine Grove 15% | `rgba(31, 59, 52, 0.15)` | Subtle borders, table dividers, registration marks | Calibrated subtle depth |
-| **Footer** | Blue Granite | `#2F3E51` | Grounding foundation section | 9.32:1 (Cannoli text on Blue Granite) |
+| **Page background** | Parchment | `#F4F1DE` | Primary canvas & inverted text | — |
+| **Main text** | Deep navy | `#0D1B2A` | Headings, body text, footer ground | 15.31:1 on Parchment (AAA) |
+| **Structural dark panels** | Slate | `#1B263B` | Dark feature bands and guide panels | 13.33:1 (Parchment text on Slate) |
+| **Links & small text** | Steel | `#415A77` | Text links, meta, button hover, focus | 6.26:1 on Parchment (AA) |
+| **Accent & atmosphere** | Moss | `#778D7A` | Rules, marquee band, MOQ pills, numerals | 3.15:1 graphics on Parchment; 4.87:1 navy on Moss |
+| **Soft panels & illustrations** | Sand | `#D4C4A8` | Warm panels, cards, CTA bands | 10.16:1 navy on Sand; 4.15:1 steel (large text only) |
+| **Hairlines** | Deep navy 15% | `rgba(13, 27, 42, 0.15)` | Subtle borders, table dividers, registration marks | Calibrated subtle depth |
+| **Footer** | Deep navy | `#0D1B2A` | Deepest grounding section | 15.31:1 (Parchment text on navy) |
 
 ## Tech Stack
 

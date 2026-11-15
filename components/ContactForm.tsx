@@ -1,31 +1,54 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
+import type { z } from "zod";
 import { SITE, getWhatsAppHref } from "@/lib/site";
 import { enquirySchema, type EnquiryInput } from "@/lib/contact-schema";
 
-export function ContactForm() {
+type EnquiryFormValues = z.input<typeof enquirySchema>;
+
+type ContactFormProps = {
+  initialQuantity?: string;
+};
+
+export function ContactForm({ initialQuantity = "" }: ContactFormProps) {
   const [submitted, setSubmitted] = useState(false);
   const [formError, setFormError] = useState("");
+
+  const validInitialQty =
+    initialQuantity && (SITE.contactPage.quantityOptions as readonly string[]).includes(initialQuantity)
+      ? initialQuantity
+      : "";
+
   const {
     register,
     handleSubmit,
+    setValue,
     formState: { errors, isSubmitting },
-  } = useForm<EnquiryInput>({
+  } = useForm<EnquiryFormValues, unknown, EnquiryInput>({
     resolver: zodResolver(enquirySchema),
     defaultValues: {
       name: "",
       phone: "",
       email: "",
       service: "",
-      quantity: "",
+      quantity: validInitialQty,
       message: "",
       website: "",
     },
     mode: "onBlur",
   });
+
+  // Keep dropdown in sync if navigated with query param
+  useEffect(() => {
+    const searchQty = typeof window !== "undefined" ? new URLSearchParams(window.location.search).get("qty") : null;
+    const targetQty = validInitialQty || (searchQty && (SITE.contactPage.quantityOptions as readonly string[]).includes(searchQty) ? searchQty : "");
+    if (targetQty) {
+      setValue("quantity", targetQty);
+    }
+  }, [validInitialQty, setValue]);
 
   async function onSubmit(values: EnquiryInput) {
     setFormError("");
@@ -49,14 +72,23 @@ export function ContactForm() {
   if (submitted) {
     return (
       <section aria-live="polite" className="contact-success" role="status">
-        <span aria-hidden="true" className="contact-success__number">01</span>
+        <div className="contact-success__badge">Enquiry received</div>
         <h2>{SITE.contactPage.successTitle}</h2>
-        <p>{SITE.contactPage.successCopy}</p>
-        <p className="contact-success__next-step">{SITE.contactPage.responseTime}</p>
-        <a className="text-link" href={getWhatsAppHref()} rel="noreferrer" target="_blank">
-          <span>{SITE.ui.whatsappLabel}</span>
-          <span aria-hidden="true" className="text-link__arrow">↗</span>
-        </a>
+        <p className="contact-success__copy">{SITE.contactPage.successCopy}</p>
+        <div className="contact-success__banner">
+          <span className="contact-success__icon" aria-hidden="true">✓</span>
+          <div>
+            <strong>We reply within one working day</strong>
+            <p>Our lab team in Chennai will review your specifications and send a clear next step.</p>
+          </div>
+        </div>
+        <div className="contact-success__direct">
+          <p>Need an immediate answer?</p>
+          <a className="text-link" href={getWhatsAppHref()} rel="noreferrer" target="_blank">
+            <span>Message our lab directly on {SITE.ui.whatsappLabel}</span>
+            <span aria-hidden="true" className="text-link__arrow text-link__arrow--external">↗</span>
+          </a>
+        </div>
       </section>
     );
   }
@@ -76,7 +108,9 @@ export function ContactForm() {
 
       <div className="contact-form__grid">
         <div className="form-field">
-          <label htmlFor="name">{SITE.contactPage.labels.name}</label>
+          <label htmlFor="name">
+            {SITE.contactPage.labels.name} <span className="form-field__required" aria-hidden="true">*</span>
+          </label>
           <input
             autoComplete="name"
             id="name"
@@ -89,7 +123,9 @@ export function ContactForm() {
         </div>
 
         <div className="form-field">
-          <label htmlFor="phone">{SITE.contactPage.labels.phone}</label>
+          <label htmlFor="phone">
+            {SITE.contactPage.labels.phone} <span className="form-field__optional">(optional)</span>
+          </label>
           <input
             autoComplete="tel"
             id="phone"
@@ -104,7 +140,9 @@ export function ContactForm() {
         </div>
 
         <div className="form-field form-field--wide">
-          <label htmlFor="email">{SITE.contactPage.labels.email}</label>
+          <label htmlFor="email">
+            {SITE.contactPage.labels.email} <span className="form-field__required" aria-hidden="true">*</span>
+          </label>
           <input
             autoComplete="email"
             id="email"
@@ -119,7 +157,9 @@ export function ContactForm() {
         </div>
 
         <div className="form-field">
-          <label htmlFor="service">{SITE.contactPage.labels.service}</label>
+          <label htmlFor="service">
+            {SITE.contactPage.labels.service} <span className="form-field__required" aria-hidden="true">*</span>
+          </label>
           <select
             id="service"
             aria-invalid={Boolean(errors.service)}
@@ -135,11 +175,14 @@ export function ContactForm() {
         </div>
 
         <div className="form-field">
-          <label htmlFor="quantity">{SITE.contactPage.labels.quantity}</label>
+          <label htmlFor="quantity">
+            {SITE.contactPage.labels.quantity} <span className="form-field__required" aria-hidden="true">*</span>
+          </label>
           <select
             id="quantity"
             aria-invalid={Boolean(errors.quantity)}
             aria-describedby={errors.quantity ? "quantity-error" : undefined}
+            defaultValue={validInitialQty}
             {...register("quantity")}
           >
             <option value="">{SITE.contactPage.placeholders.quantity}</option>
@@ -151,7 +194,9 @@ export function ContactForm() {
         </div>
 
         <div className="form-field form-field--wide">
-          <label htmlFor="message">{SITE.contactPage.labels.message}</label>
+          <label htmlFor="message">
+            {SITE.contactPage.labels.message} <span className="form-field__required" aria-hidden="true">*</span>
+          </label>
           <textarea
             id="message"
             placeholder={SITE.contactPage.placeholders.message}
@@ -170,9 +215,9 @@ export function ContactForm() {
           <span className="button__label">
             {isSubmitting ? SITE.contactPage.submittingLabel : SITE.contactPage.submitLabel}
           </span>
-          <span aria-hidden="true" className="button__arrow">↗</span>
+          <span aria-hidden="true" className="button__arrow">→</span>
         </button>
-        <p>{SITE.contactPage.responseTime}</p>
+        <p className="contact-form__guarantee">{SITE.contactPage.responseTime}</p>
       </div>
     </form>
   );

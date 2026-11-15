@@ -15,7 +15,7 @@ export function ServiceRow({ service }: ServiceRowProps) {
       </span>
       <span className="service-row__aside">
         <span className="service-row__moq">{service.moq}</span>
-        <span aria-hidden="true" className="service-row__arrow">↗</span>
+        <span aria-hidden="true" className="service-row__arrow">→</span>
       </span>
     </Link>
   );

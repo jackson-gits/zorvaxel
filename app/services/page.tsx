@@ -1,4 +1,5 @@
 import dynamic from "next/dynamic";
+import Link from "next/link";
 import { Button } from "@/components/Button";
 import { FAQPageJsonLd } from "@/components/JsonLd";
 import { PackageIllustration } from "@/components/illustrations";
@@ -55,21 +56,27 @@ export default function ServicesPage() {
       </div>
 
       <section aria-labelledby="services-guide-title" className="page-section service-guide">
-        <div className="page-shell service-guide__inner">
+        <div className="page-shell service-guide__inner surface-dark">
           <Reveal>
             <p className="eyebrow">{SITE.services.decisionGuide.eyebrow}</p>
             <h2 id="services-guide-title">{SITE.services.decisionGuide.title}</h2>
             <div className="service-guide__rows">
               {SITE.services.decisionGuide.rows.map((row) => (
-                <div className="service-guide__row" key={row.need}>
-                  <span>{row.need}</span>
-                  <span>{row.answer}</span>
-                </div>
+                <Link
+                  className="service-guide__row service-guide__row--link"
+                  href={row.href}
+                  key={row.need}
+                >
+                  <span className="service-guide__need">{row.need}</span>
+                  <span className="service-guide__answer">
+                    <span>{row.answer}</span>
+                    <span aria-hidden="true" className="service-guide__arrow">→</span>
+                  </span>
+                </Link>
               ))}
             </div>
             <Button href={SITE.ui.enquireHref}>{SITE.services.decisionGuide.action}</Button>
           </Reveal>
-          <span aria-hidden="true" className="service-guide__number">05</span>
         </div>
       </section>
 

@@ -16,17 +16,17 @@ type BlogCardProps = {
 
 export function BlogCard({ post }: BlogCardProps) {
   return (
-    <article className="blog-row">
+    <Link className="blog-row" href={`/blog/${post.slug}`}>
       <div className="blog-row__meta">
         <time dateTime={post.date}>{post.displayDate ?? post.date}</time>
         <span>{post.category}</span>
       </div>
-      <Link className="blog-row__content" href={`/blog/${post.slug}`}>
+      <div className="blog-row__content">
         <span className="blog-row__title">{post.title}</span>
         <span className="blog-row__excerpt">{post.excerpt}</span>
-      </Link>
+      </div>
       <span className="blog-row__reading-time">{post.readingTime}</span>
-      <span aria-hidden="true" className="blog-row__arrow">↗</span>
-    </article>
+      <span aria-hidden="true" className="blog-row__arrow">→</span>
+    </Link>
   );
 }

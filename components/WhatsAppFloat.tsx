@@ -1,11 +1,55 @@
+"use client";
+
+import { useEffect, useState } from "react";
 import { SITE, getWhatsAppHref } from "@/lib/site";
 
 export function WhatsAppFloat() {
+  const [formInView, setFormInView] = useState(false);
+  const [fieldFocused, setFieldFocused] = useState(false);
+  const [rowInView, setRowInView] = useState(false);
+
+  useEffect(() => {
+    const form = document.querySelector(".contact-form");
+    const observer = form
+      ? new IntersectionObserver(([entry]) => setFormInView(entry.isIntersecting))
+      : null;
+    if (form && observer) observer.observe(form);
+
+    const rows = [...document.querySelectorAll(".service-row, .blog-row")];
+    const visibleRows = new Set<Element>();
+    const rowObserver = new IntersectionObserver((entries) => {
+      for (const entry of entries) {
+        if (entry.isIntersecting) visibleRows.add(entry.target);
+        else visibleRows.delete(entry.target);
+      }
+      setRowInView(visibleRows.size > 0);
+    });
+    rows.forEach((row) => rowObserver.observe(row));
+
+    const onFocusIn = (event: FocusEvent) => {
+      const target = event.target;
+      setFieldFocused(target instanceof Element && Boolean(target.closest("input, select, textarea")));
+    };
+    const onFocusOut = (event: FocusEvent) => {
+      const next = event.relatedTarget;
+      setFieldFocused(next instanceof Element && Boolean(next.closest("input, select, textarea")));
+    };
+    document.addEventListener("focusin", onFocusIn);
+    document.addEventListener("focusout", onFocusOut);
+    return () => {
+      observer?.disconnect();
+      rowObserver.disconnect();
+      document.removeEventListener("focusin", onFocusIn);
+      document.removeEventListener("focusout", onFocusOut);
+    };
+  }, []);
+
   return (
     <a
       aria-label={`${SITE.ui.whatsappLabel}: ${SITE.ui.whatsappMessage}`}
       className="whatsapp-float"
       href={getWhatsAppHref()}
+      hidden={formInView || fieldFocused || rowInView}
       rel="noreferrer"
       target="_blank"
     >

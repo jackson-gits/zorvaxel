@@ -17,8 +17,9 @@ export function SectionHeader({
   className = "",
   titleId,
 }: SectionHeaderProps) {
+  const isNumbered = Boolean(number);
   return (
-    <header className={`section-header${className ? ` ${className}` : ""}`}>
+    <header className={`section-header${isNumbered ? " section-header--numbered" : ""}${className ? ` ${className}` : ""}`}>
       {number ? <span aria-hidden="true" className="section-header__number">{number}</span> : null}
       <div className="section-header__content">
         {eyebrow ? <p className="eyebrow section-header__eyebrow">{eyebrow}</p> : null}

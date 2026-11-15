@@ -2,7 +2,7 @@ import dynamic from "next/dynamic";
 import { BlogCard } from "@/components/BlogCard";
 import { Button } from "@/components/Button";
 import { LocalBusinessJsonLd } from "@/components/JsonLd";
-import { DropperBottle } from "@/components/illustrations/DropperBottle";
+import { HomeHero } from "@/components/HomeHero";
 import { Marquee } from "@/components/Marquee";
 import { SectionHeader } from "@/components/SectionHeader";
 import { ServiceRow } from "@/components/ServiceRow";
@@ -14,7 +14,6 @@ import { SITE } from "@/lib/site";
 const ProcessSteps = dynamic(() => import("@/components/ProcessSteps").then((module) => module.ProcessSteps));
 const Reveal = dynamic(() => import("@/components/Reveal").then((module) => module.Reveal));
 const RevealItem = dynamic(() => import("@/components/Reveal").then((module) => module.RevealItem));
-const WordReveal = dynamic(() => import("@/components/WordReveal").then((module) => module.WordReveal));
 
 export const metadata = createPageMetadata({
   title: SITE.seo.home.title,
@@ -28,30 +27,22 @@ export default function HomePage() {
   return (
     <main className="page-main" id="main-content">
       <LocalBusinessJsonLd />
-      <section aria-labelledby="home-title" className="home-hero">
-        <div className="page-shell home-hero__inner">
-          <div className="home-hero__copy">
-            <p className="eyebrow home-hero__eyebrow">{SITE.home.hero.label}</p>
-            <h1 className="home-hero__title" id="home-title">
-              <WordReveal text={SITE.home.hero.title} />
-            </h1>
-            <p className="home-hero__supporting">{SITE.home.hero.supporting}</p>
-            <div className="home-hero__actions">
-              <Button href={SITE.ui.enquireHref}>{SITE.home.hero.primaryAction}</Button>
-              <TextLink href="/services">{SITE.home.hero.secondaryAction}</TextLink>
-            </div>
-          </div>
-          <div className="home-hero__art" aria-hidden="true">
-            <div className="home-hero__panel">
-              <span className="home-hero__spec">{SITE.home.hero.spec}</span>
-              <DropperBottle animate className="home-hero__dropper" />
-              <span className="home-hero__panel-note">{SITE.home.hero.panelNote}</span>
-            </div>
-          </div>
-        </div>
-      </section>
+      <HomeHero />
 
       <Marquee accessibleLabel={SITE.shortDescription} items={SITE.home.marquee} />
+
+      <section aria-labelledby="home-process-title" className="home-process" id="home-process">
+        <div className="page-shell">
+          <ProcessSteps
+            description={SITE.home.processDescription}
+            items={SITE.home.process}
+            label={SITE.home.processHeading}
+            number="01"
+            title={SITE.home.processHeading}
+            titleId="home-process-title"
+          />
+        </div>
+      </section>
 
       <section aria-labelledby="home-services-title" className="page-section home-services">
         <div className="page-shell">
@@ -66,22 +57,6 @@ export default function HomePage() {
               </RevealItem>
             ))}
           </div>
-        </div>
-      </section>
-
-      <section aria-labelledby="home-process-title" className="page-section home-process">
-        <div className="page-shell">
-          <Reveal className="home-process__intro">
-            <SectionHeader
-              description={SITE.home.processDescription}
-              number="01"
-              title={SITE.home.processHeading}
-              titleId="home-process-title"
-            />
-          </Reveal>
-          <Reveal delay={0.08}>
-            <ProcessSteps items={SITE.home.process} label={SITE.home.processHeading} />
-          </Reveal>
         </div>
       </section>
 
@@ -113,7 +88,9 @@ export default function HomePage() {
           <Reveal>
             <p className="eyebrow">{SITE.ui.enquire}</p>
             <h2 id="home-closing-title">{SITE.home.closing.title}</h2>
-            <Button href={SITE.ui.enquireHref}>{SITE.home.closing.action}</Button>
+            <div className="home-closing__actions">
+              <Button href={SITE.ui.enquireHref}>{SITE.home.closing.action}</Button>
+            </div>
           </Reveal>
           <span aria-hidden="true" className="home-closing__line" />
         </div>

@@ -9,7 +9,14 @@ export const metadata = createPageMetadata({
   path: "/contact",
 });
 
-export default function ContactPage() {
+type ContactPageProps = {
+  searchParams?: Promise<{ qty?: string }>;
+};
+
+export default async function ContactPage(props: ContactPageProps) {
+  const searchParams = props.searchParams ? await props.searchParams : undefined;
+  const initialQty = searchParams?.qty;
+
   return (
     <main className="page-main contact-page" id="main-content">
       <LocalBusinessJsonLd />
@@ -23,7 +30,7 @@ export default function ContactPage() {
         <div className="page-shell contact-layout">
           <div className="contact-form-column">
             <h2>{SITE.contactPage.formHeading}</h2>
-            <ContactForm />
+            <ContactForm initialQuantity={initialQty} />
           </div>
 
           <aside aria-labelledby="contact-details-title" className="contact-details">

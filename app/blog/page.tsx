@@ -25,7 +25,7 @@ export default function BlogIndexPage() {
           <BlogIndexFilter posts={posts} />
         </div>
       </section>
-      <section className="page-section blog-index-cta">
+      <section className="page-section blog-index-cta surface-sand">
         <div className="page-shell blog-index-cta__inner">
           <p>{SITE.blog.closing}</p>
           <Button href={SITE.ui.enquireHref}>{SITE.ui.enquire}</Button>

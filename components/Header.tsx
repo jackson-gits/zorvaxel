@@ -27,11 +27,11 @@ export function Header() {
     const updateVisibility = () => {
       const currentScroll = window.scrollY;
       const scrollingDown = currentScroll > previousScroll.current;
-      if (currentScroll < 80) {
+      if (currentScroll < 64) {
         setIsHidden(false);
-      } else if (scrollingDown && currentScroll - previousScroll.current > 2) {
+      } else if (scrollingDown && currentScroll - previousScroll.current > 10) {
         setIsHidden(true);
-      } else if (currentScroll < previousScroll.current) {
+      } else if (currentScroll < previousScroll.current - 5) {
         setIsHidden(false);
       }
       previousScroll.current = currentScroll;
@@ -66,7 +66,7 @@ export function Header() {
             })}
             <Link className="nav-link nav-link--enquire" href={SITE.ui.enquireHref}>
               {SITE.ui.enquire}
-              <span aria-hidden="true">↗</span>
+              <span aria-hidden="true">→</span>
             </Link>
           </nav>
           <button

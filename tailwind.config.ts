@@ -8,23 +8,27 @@ const config: Config = {
   ],
   theme: {
     extend: {
+      // Token values live in app/globals.css so there is a single source of truth.
+      // RGB channels allow Tailwind opacity modifiers (e.g. bg-moss/40).
       colors: {
-        paper: "#F2EDE1", // Cannoli Cream
-        "cannoli-cream": "#F2EDE1",
-        ink: "#1F3B34", // Pine Grove (Main text, dark sections)
-        "pine-grove": "#1F3B34",
-        accent: "#C86A4A", // Terracotta Clay (Primary accent: buttons, key details)
-        "terracotta-clay": "#C86A4A",
-        "accent-ink": "#A64A2B", // Darker terracotta (Accent for links and small text)
-        "dark-terracotta": "#A64A2B",
-        sage: "#A3B18A", // Sage Whisper
-        panel: "rgba(163, 177, 138, 0.32)", // Soft panels, illustration backgrounds (lighter tint ~32%)
-        "panel-tint": "rgba(163, 177, 138, 0.20)",
-        "panel-solid": "#dce2d4",
-        line: "rgba(31, 59, 52, 0.15)", // Hairlines: Pine Grove at 15% opacity
-        muted: "#435E57", // Harmonious Pine Grove tint (6.2:1 contrast against Cannoli Cream)
-        "blue-granite": "#2F3E51", // Optional for footer
-        footer: "#2F3E51",
+        paper: "rgb(var(--parchment-rgb) / <alpha-value>)", // Parchment
+        parchment: "rgb(var(--parchment-rgb) / <alpha-value>)",
+        ink: "rgb(var(--navy-rgb) / <alpha-value>)", // Deep navy (main text)
+        navy: "rgb(var(--navy-rgb) / <alpha-value>)",
+        "ink-soft": "rgb(var(--slate-rgb) / <alpha-value>)", // Slate (dark panels)
+        slate: "rgb(var(--slate-rgb) / <alpha-value>)",
+        accent: "rgb(var(--moss-rgb) / <alpha-value>)", // Moss (rules, bands, detail)
+        moss: "rgb(var(--moss-rgb) / <alpha-value>)",
+        "accent-ink": "rgb(var(--steel-rgb) / <alpha-value>)", // Steel (links, small text)
+        steel: "rgb(var(--steel-rgb) / <alpha-value>)",
+        sand: "rgb(var(--sand-rgb) / <alpha-value>)",
+        sage: "rgb(var(--moss-rgb) / <alpha-value>)",
+        panel: "rgb(var(--sand-rgb) / 0.55)", // Warm sand panels
+        "panel-tint": "rgb(var(--moss-rgb) / 0.14)",
+        "panel-solid": "var(--panel-solid)",
+        line: "rgb(var(--navy-rgb) / 0.15)", // Hairlines: navy at 15%
+        muted: "var(--muted)", // Steel shade (7.4:1 on Parchment)
+        footer: "var(--footer-bg)",
       },
       fontFamily: {
         display: ["var(--font-instrument-serif)", "Georgia", "serif"],

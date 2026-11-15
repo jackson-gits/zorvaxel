@@ -108,7 +108,7 @@ export default async function BlogArticlePage({ params }: BlogArticleProps) {
         </section>
       ) : null}
 
-      <section aria-labelledby="article-cta-title" className="page-section article-cta">
+      <section aria-labelledby="article-cta-title" className="page-section article-cta surface-sand">
         <div className="page-shell article-cta__inner">
           <h2 id="article-cta-title">{SITE.blog.closing}</h2>
           <Button href={SITE.ui.enquireHref}>{SITE.ui.enquire}</Button>

@@ -5,6 +5,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useRef } from "react";
 import { SITE } from "@/lib/site";
+import { lockScroll, unlockScroll } from "@/lib/motion/scroll-lock";
 import { Wordmark } from "@/components/Wordmark";
 
 type MobileMenuProps = {
@@ -44,10 +45,12 @@ export function MobileMenu({ open, onClose }: MobileMenuProps) {
     };
     const previousOverflow = document.body.style.overflow;
     document.body.style.overflow = "hidden";
+    lockScroll();
     window.addEventListener("keydown", handleKeyDown);
 
     return () => {
       document.body.style.overflow = previousOverflow;
+      unlockScroll();
       window.removeEventListener("keydown", handleKeyDown);
     };
   }, [open, onClose]);
@@ -94,12 +97,12 @@ export function MobileMenu({ open, onClose }: MobileMenuProps) {
                 >
                   <span className="mobile-menu__number">0{index + 1}</span>
                   <span>{item.label}</span>
-                  <span aria-hidden="true" className="mobile-menu__arrow">↗</span>
+                  <span aria-hidden="true" className="mobile-menu__arrow">→</span>
                 </Link>
               );
             })}
             <Link className="mobile-menu__enquire" href={SITE.ui.enquireHref} onClick={onClose}>
-              {SITE.ui.enquire} <span aria-hidden="true">↗</span>
+              {SITE.ui.enquire} <span aria-hidden="true">→</span>
             </Link>
           </nav>
           <div className="page-shell mobile-menu__note">
