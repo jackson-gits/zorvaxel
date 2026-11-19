@@ -8,7 +8,7 @@ import { gsap } from "gsap";
 type ButtonProps = {
   href: string;
   children: ReactNode;
-  variant?: "primary" | "secondary";
+  variant?: "primary" | "secondary" | "amber" | "sage";
   showArrow?: boolean;
   external?: boolean;
   className?: string;
@@ -29,8 +29,8 @@ export function Button({
     const element = linkRef.current;
     if (!element) return;
 
-    // Fine pointers only, and only for the primary action.
-    if (variant !== "primary") return;
+    // Fine pointers only, and only for primary / highlighted actions.
+    if (variant === "secondary") return;
     if (!window.matchMedia("(pointer: fine)").matches) return;
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
 

@@ -1,0 +1,33 @@
+# Render Blueprint Specification (render.yaml)
+# Docs: https://render.com/docs/blueprint-spec
+
+services:
+  - type: web
+    name: zorvaxel
+    runtime: node
+    plan: free # Change to 'starter' or higher if running continuous production workloads
+    region: singapore # Singapore (sin) is lowest-latency for Chennai / India traffic
+    buildCommand: corepack enable && pnpm install --frozen-lockfile && pnpm run build
+    startCommand: pnpm run start
+    healthCheckPath: /
+    autoDeploy: true
+
+    envVars:
+      - key: NODE_VERSION
+        value: 20.18.0
+
+      # Server-side Resend API credentials
+      # Set 'sync: false' so secret values are configured in the Render Dashboard
+      - key: RESEND_API_KEY
+        sync: false
+
+      - key: CONTACT_TO_EMAIL
+        sync: false
+
+      - key: RESEND_FROM_EMAIL
+        value: "Zorvaxel enquiries <onboarding@resend.dev>"
+
+      # Production canonical domain (set once custom domain is attached)
+      # Defaults to your Render URL (https://zorvaxel.onrender.com) automatically if omitted
+      - key: NEXT_PUBLIC_SITE_URL
+        sync: false

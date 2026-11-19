@@ -11,9 +11,21 @@ type EnquiryFormValues = z.input<typeof enquirySchema>;
 
 type ContactFormProps = {
   initialQuantity?: string;
+  initialService?: string;
 };
 
-export function ContactForm({ initialQuantity = "" }: ContactFormProps) {
+function resolveServiceTitle(param?: string | null): string {
+  if (!param) return "";
+  const match = SITE.services.items.find(
+    (s) =>
+      s.number === param ||
+      s.number === param.padStart(2, "0") ||
+      s.title.toLowerCase() === param.toLowerCase()
+  );
+  return match ? match.title : "";
+}
+
+export function ContactForm({ initialQuantity = "", initialService = "" }: ContactFormProps) {
   const [submitted, setSubmitted] = useState(false);
   const [formError, setFormError] = useState("");
 
@@ -21,6 +33,7 @@ export function ContactForm({ initialQuantity = "" }: ContactFormProps) {
     initialQuantity && (SITE.contactPage.quantityOptions as readonly string[]).includes(initialQuantity)
       ? initialQuantity
       : "";
+  const validInitialService = resolveServiceTitle(initialService);
 
   const {
     register,
@@ -33,7 +46,7 @@ export function ContactForm({ initialQuantity = "" }: ContactFormProps) {
       name: "",
       phone: "",
       email: "",
-      service: "",
+      service: validInitialService,
       quantity: validInitialQty,
       message: "",
       website: "",
@@ -43,12 +56,20 @@ export function ContactForm({ initialQuantity = "" }: ContactFormProps) {
 
   // Keep dropdown in sync if navigated with query param
   useEffect(() => {
-    const searchQty = typeof window !== "undefined" ? new URLSearchParams(window.location.search).get("qty") : null;
+    if (typeof window === "undefined") return;
+    const params = new URLSearchParams(window.location.search);
+    const searchQty = params.get("qty");
     const targetQty = validInitialQty || (searchQty && (SITE.contactPage.quantityOptions as readonly string[]).includes(searchQty) ? searchQty : "");
     if (targetQty) {
       setValue("quantity", targetQty);
     }
-  }, [validInitialQty, setValue]);
+
+    const searchService = params.get("service");
+    const targetService = validInitialService || resolveServiceTitle(searchService);
+    if (targetService) {
+      setValue("service", targetService);
+    }
+  }, [validInitialQty, validInitialService, setValue]);
 
   async function onSubmit(values: EnquiryInput) {
     setFormError("");
@@ -84,10 +105,14 @@ export function ContactForm({ initialQuantity = "" }: ContactFormProps) {
         </div>
         <div className="contact-success__direct">
           <p>Need an immediate answer?</p>
-          <a className="text-link" href={getWhatsAppHref()} rel="noreferrer" target="_blank">
-            <span>Message our lab directly on {SITE.ui.whatsappLabel}</span>
-            <span aria-hidden="true" className="text-link__arrow text-link__arrow--external">↗</span>
-          </a>
+          {getWhatsAppHref() ? (
+            <a className="text-link" href={getWhatsAppHref()!} rel="noreferrer" target="_blank">
+              <span>Message our lab directly on {SITE.ui.whatsappLabel}</span>
+              <span aria-hidden="true" className="text-link__arrow text-link__arrow--external">↗</span>
+            </a>
+          ) : (
+            <p>{SITE.contact.whatsapp.label}</p>
+          )}
         </div>
       </section>
     );
@@ -182,7 +207,6 @@ export function ContactForm({ initialQuantity = "" }: ContactFormProps) {
             id="quantity"
             aria-invalid={Boolean(errors.quantity)}
             aria-describedby={errors.quantity ? "quantity-error" : undefined}
-            defaultValue={validInitialQty}
             {...register("quantity")}
           >
             <option value="">{SITE.contactPage.placeholders.quantity}</option>

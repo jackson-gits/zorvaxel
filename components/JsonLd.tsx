@@ -87,3 +87,25 @@ export function FAQPageJsonLd({
 
   return <JsonLd data={data} />;
 }
+
+export function WebSiteJsonLd() {
+  const origin = SITE.origin || "https://zorvaxel.com";
+  const data = {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "@id": `${origin}/#website`,
+    url: origin,
+    name: SITE.name,
+    alternateName: ["Zorvaxel Serum Lab", "Zorvaxel Chennai"],
+    description: SITE.shortDescription,
+    inLanguage: ["en-IN", "ta-IN"],
+    publisher: {
+      "@type": "Organization",
+      name: SITE.name,
+      url: origin,
+      logo: `${origin}/dropper-mark.svg`,
+    },
+  };
+
+  return <JsonLd data={data} />;
+}

@@ -7,18 +7,21 @@ import { SITE } from "@/lib/site";
 const postsDirectory = path.join(process.cwd(), "content", "blog");
 const allowedCategories: readonly string[] = SITE.blog.categories;
 
+export type BlogLocale = "en" | "ta";
+
 const frontmatterSchema = z.object({
   title: z.string().trim().min(1),
-  seoTitle: z.string().trim().min(1).max(70).optional(),
+  seoTitle: z.string().trim().min(1).max(120).optional(),
   date: z.string().regex(/^\d{4}-\d{2}-\d{2}$/),
   category: z.string().refine((category) => allowedCategories.includes(category)),
-  excerpt: z.string().trim().min(1).max(320),
+  excerpt: z.string().trim().min(1).max(400),
 });
 
 type Frontmatter = z.infer<typeof frontmatterSchema>;
 
 export type BlogPost = Frontmatter & {
   slug: string;
+  lang: BlogLocale;
   displayDate: string;
   readingTime: string;
   content: string;
@@ -40,25 +43,42 @@ function getPostFromFile(fileName: string): BlogPost {
     throw new Error(`Invalid date in blog post: ${fileName}`);
   }
 
+  const isTamil = fileName.endsWith(".ta.mdx");
+  const lang: BlogLocale = isTamil ? "ta" : "en";
+  const slug = fileName.replace(/\.ta\.mdx$/i, "").replace(/\.mdx$/i, "");
+
   const wordCount = parsed.content.trim().split(/\s+/).filter(Boolean).length;
-  const minutes = Math.max(1, Math.ceil(wordCount / 200));
-  const slug = fileName.replace(/\.mdx$/i, "");
+  const minutes = Math.max(1, Math.ceil(wordCount / (isTamil ? 140 : 200)));
+
+  const displayDate = new Intl.DateTimeFormat(isTamil ? "ta-IN" : "en-IN", {
+    day: "numeric",
+    month: isTamil ? "long" : "short",
+    year: "numeric",
+    timeZone: "UTC",
+  }).format(date);
 
   return {
     ...frontmatter,
     slug,
+    lang,
     content: parsed.content.trim(),
-    displayDate: new Intl.DateTimeFormat("en-IN", {
-      day: "numeric",
-      month: "short",
-      year: "numeric",
-      timeZone: "UTC",
-    }).format(date),
-    readingTime: `${minutes} ${SITE.blog.readingTimeSuffix}`,
+    displayDate,
+    readingTime: isTamil ? `${minutes} நிமிட வாசிப்பு` : `${minutes} min read`,
   };
 }
 
-export function getPosts(): BlogPost[] {
+export function getPosts(locale: BlogLocale = "en"): BlogPost[] {
+  if (!fs.existsSync(postsDirectory)) return [];
+
+  return fs
+    .readdirSync(postsDirectory)
+    .filter((fileName) => fileName.endsWith(".mdx"))
+    .map(getPostFromFile)
+    .filter((post) => post.lang === locale)
+    .sort((first, second) => second.date.localeCompare(first.date));
+}
+
+export function getAllPosts(): BlogPost[] {
   if (!fs.existsSync(postsDirectory)) return [];
 
   return fs
@@ -68,30 +88,38 @@ export function getPosts(): BlogPost[] {
     .sort((first, second) => second.date.localeCompare(first.date));
 }
 
-export function getLatestPosts(limit = 3): BlogPost[] {
-  return getPosts().slice(0, limit);
+export function getLatestPosts(limit = 3, locale: BlogLocale = "en"): BlogPost[] {
+  return getPosts(locale).slice(0, limit);
 }
 
-export function getPostBySlug(slug: string): BlogPost | null {
+export function getPostBySlug(slug: string, locale: BlogLocale = "en"): BlogPost | null {
   if (!/^[a-z0-9]+(?:-[a-z0-9]+)*$/i.test(slug)) return null;
-  const fileName = `${slug}.mdx`;
-  if (!fs.existsSync(path.join(postsDirectory, fileName))) return null;
-  return getPostFromFile(fileName);
+  const targetFile = locale === "ta" ? `${slug}.ta.mdx` : `${slug}.mdx`;
+  const fallbackFile = locale === "ta" ? `${slug}.mdx` : `${slug}.ta.mdx`;
+
+  if (fs.existsSync(path.join(postsDirectory, targetFile))) {
+    return getPostFromFile(targetFile);
+  }
+  if (fs.existsSync(path.join(postsDirectory, fallbackFile))) {
+    return getPostFromFile(fallbackFile);
+  }
+  return null;
 }
 
 export function getPostSlugs(): string[] {
   if (!fs.existsSync(postsDirectory)) return [];
-  return fs
+  const slugs = fs
     .readdirSync(postsDirectory)
     .filter((fileName) => fileName.endsWith(".mdx"))
-    .map((fileName) => fileName.replace(/\.mdx$/i, ""));
+    .map((fileName) => fileName.replace(/\.ta\.mdx$/i, "").replace(/\.mdx$/i, ""));
+  return Array.from(new Set(slugs));
 }
 
 export function slugifyHeading(text: string): string {
   return text
     .toLocaleLowerCase("en")
     .replace(/&/g, " and ")
-    .replace(/[^\p{L}\p{N}\s-]/gu, "")
+    .replace(/[^\p{L}\p{M}\p{N}\s-]/gu, "")
     .trim()
     .replace(/[\s-]+/g, "-");
 }

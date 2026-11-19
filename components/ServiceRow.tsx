@@ -7,7 +7,11 @@ type ServiceRowProps = {
 
 export function ServiceRow({ service }: ServiceRowProps) {
   return (
-    <Link className="service-row" href={`/services#service-${service.number}`}>
+    <Link
+      aria-label={`Service ${service.number}: ${service.title} (${service.moq})`}
+      className="service-row"
+      href={`/services#service-${service.number}`}
+    >
       <span aria-hidden="true" className="service-row__number">{service.number}</span>
       <span className="service-row__main">
         <span className="service-row__title">{service.title}</span>

@@ -11,6 +11,13 @@ type RevealProps = {
   as?: "div" | "section" | "article";
 };
 
+type RevealItemProps = {
+  children: ReactNode;
+  className?: string;
+  delay?: number;
+  as?: "div" | "li";
+};
+
 function useRevealOnce() {
   const ref = useRef<HTMLDivElement>(null);
   const [revealed, setRevealed] = useState(false);
@@ -19,13 +26,20 @@ function useRevealOnce() {
     const element = ref.current;
     if (!element) return;
 
+    // Check if already in viewport on mount so initial content reveals immediately
+    const rect = element.getBoundingClientRect();
+    if (rect.top < window.innerHeight * 0.95 && rect.bottom > 0) {
+      setRevealed(true);
+      return;
+    }
+
     const observer = new IntersectionObserver(
       ([entry]) => {
         if (!entry.isIntersecting) return;
         setRevealed(true);
         observer.unobserve(element);
       },
-      { rootMargin: "0px 0px -10% 0px", threshold: 0 },
+      { rootMargin: "0px 0px -8% 0px", threshold: 0.05 },
     );
 
     observer.observe(element);
@@ -49,13 +63,13 @@ export function Reveal({
 }: RevealProps) {
   const { ref, revealed } = useRevealOnce();
   const classes = revealClass(className, revealed);
-  const style = { "--reveal-delay": `${delay}s` } as CSSProperties;
+  const style = delay ? ({ "--reveal-delay": `${delay}s` } as CSSProperties) : undefined;
 
   if (as === "section") {
-    return <section className={classes} ref={ref} style={style}>{children}</section>;
+    return <section className={classes} ref={ref as any} style={style}>{children}</section>;
   }
   if (as === "article") {
-    return <article className={classes} ref={ref} style={style}>{children}</article>;
+    return <article className={classes} ref={ref as any} style={style}>{children}</article>;
   }
   return <div className={classes} ref={ref} style={style}>{children}</div>;
 }
@@ -63,13 +77,23 @@ export function Reveal({
 export function RevealItem({
   children,
   className,
-}: {
-  children: ReactNode;
-  className?: string;
-}) {
+  delay = 0,
+  as = "div",
+}: RevealItemProps) {
   const { ref, revealed } = useRevealOnce();
+  const classes = revealClass(className, revealed);
+  const style = delay ? ({ "--reveal-delay": `${delay}s` } as CSSProperties) : undefined;
+
+  if (as === "li") {
+    return (
+      <li className={classes} ref={ref as any} style={style}>
+        {children}
+      </li>
+    );
+  }
+
   return (
-    <div className={revealClass(className, revealed)} ref={ref}>
+    <div className={classes} ref={ref} style={style}>
       {children}
     </div>
   );

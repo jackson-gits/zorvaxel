@@ -10,12 +10,13 @@ export const metadata = createPageMetadata({
 });
 
 type ContactPageProps = {
-  searchParams?: Promise<{ qty?: string }>;
+  searchParams?: Promise<{ qty?: string; service?: string }>;
 };
 
 export default async function ContactPage(props: ContactPageProps) {
   const searchParams = props.searchParams ? await props.searchParams : undefined;
   const initialQty = searchParams?.qty;
+  const initialService = searchParams?.service;
 
   return (
     <main className="page-main contact-page" id="main-content">
@@ -30,7 +31,7 @@ export default async function ContactPage(props: ContactPageProps) {
         <div className="page-shell contact-layout">
           <div className="contact-form-column">
             <h2>{SITE.contactPage.formHeading}</h2>
-            <ContactForm initialQuantity={initialQty} />
+            <ContactForm initialQuantity={initialQty} initialService={initialService} />
           </div>
 
           <aside aria-labelledby="contact-details-title" className="contact-details">
@@ -56,9 +57,13 @@ export default async function ContactPage(props: ContactPageProps) {
               <div>
                 <dt>{SITE.contact.detailLabels.whatsapp}</dt>
                 <dd>
-                  <a href={getWhatsAppHref()} rel="noreferrer" target="_blank">
-                    {SITE.contact.whatsapp.label}
-                  </a>
+                  {getWhatsAppHref() ? (
+                    <a href={getWhatsAppHref()!} rel="noreferrer" target="_blank">
+                      {SITE.contact.whatsapp.label}
+                    </a>
+                  ) : (
+                    SITE.contact.whatsapp.label
+                  )}
                 </dd>
               </div>
               <div>

@@ -58,6 +58,17 @@ export function createPageMetadata({
     title: { absolute: fullTitle },
     description,
     ...(pageUrl ? { alternates: { canonical: pageUrl } } : {}),
+    robots: {
+      index: true,
+      follow: true,
+      googleBot: {
+        index: true,
+        follow: true,
+        "max-video-preview": -1,
+        "max-image-preview": "large",
+        "max-snippet": -1,
+      },
+    },
     openGraph,
     twitter: {
       card: "summary_large_image",

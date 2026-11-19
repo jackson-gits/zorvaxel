@@ -2,12 +2,13 @@ import type { MetadataRoute } from "next";
 import { SITE } from "@/lib/site";
 
 export default function robots(): MetadataRoute.Robots {
+  const origin = SITE.origin || "https://zorvaxel.com";
   return {
     rules: {
       userAgent: "*",
       allow: "/",
-      disallow: ["/api/*"],
+      disallow: ["/api/", "/api/*"],
     },
-    ...(SITE.origin ? { sitemap: new URL("/sitemap.xml", SITE.origin).toString() } : {}),
+    sitemap: new URL("/sitemap.xml", origin).toString(),
   };
 }

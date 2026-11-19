@@ -24,6 +24,10 @@ export function Marquee({ items, accessibleLabel }: MarqueeProps) {
     return () => observer.disconnect();
   }, []);
 
+  // Repeat items 4 times per copy so each track group is >= 2200px wide,
+  // ensuring a completely seamless, gap-free infinite scroll on any resolution (1440px - 2560px).
+  const repeatedItems = [...items, ...items, ...items, ...items];
+
   return (
     <div aria-label={accessibleLabel} className="marquee" ref={marqueeRef}>
       <span className="sr-only">{phrase}</span>
@@ -33,7 +37,7 @@ export function Marquee({ items, accessibleLabel }: MarqueeProps) {
       >
         {[0, 1].map((copy) => (
           <span className="marquee__group" key={copy}>
-            {items.map((item, index) => (
+            {repeatedItems.map((item, index) => (
               <span className="marquee__item" key={`${copy}-${index}`}>
                 {item}
                 <span className="marquee__separator">·</span>

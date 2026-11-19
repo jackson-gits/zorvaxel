@@ -26,7 +26,7 @@ const GRID = [1, 2, 3, 4, 5, 6, 7, 8, 9];
 
 const PHASE_TAGS = [
   "Phase 01 · Client Brief & Specs",
-  "Phase 02 · Formulation Selection",
+  "Phase 02 · Ready Formula or Supply Serum",
   "Phase 03 · Precision Fill & Capping",
   "Phase 04 · Finished Batch & Dispatch",
 ];
@@ -38,6 +38,13 @@ const STEP_METAS = [
   "Day 2–3 · Formula lock & sample test",
   "Day 4–6 · Cleanroom fill, cap & seal",
   "Day 7 · QC verified & batch dispatch",
+];
+
+const STEP_HIGHLIGHTS = [
+  ["Scope & quantity agreed", "Formulation library selection", "Dropper container confirmed"],
+  ["Ready formulas or your serum", "Cleanroom quality verification", "Packaging spec confirmed"],
+  ["Cleanroom precision fill", "Nitrogen headspace flush", "Tamper-evident cap seal"],
+  ["Final QC verification", "Custom label application", "Dispatched from Chennai"],
 ];
 
 export function ProcessSteps({ items, label, number, title, description, titleId }: Props) {
@@ -316,11 +323,25 @@ export function ProcessSteps({ items, label, number, title, description, titleId
                 id={`process-panel-${activeStep}`}
                 role="tabpanel"
               >
-                <div className="process-story__mobile-card-head">
-                  <span className="process-story__mobile-card-num">{currentItem.number}</span>
-                  <h3 className="process-story__mobile-card-title">{currentItem.title}</h3>
+                <div className="process-story__mobile-card-top">
+                  <span className="process-story__mobile-card-num">STAGE {currentItem.number}</span>
+                  <span className="process-story__mobile-card-time">{STEP_METAS[activeStep]}</span>
                 </div>
+                <h3 className="process-story__mobile-card-title">
+                  {PHASE_TAGS[activeStep]?.split("· ")[1] ?? currentItem.title}
+                </h3>
                 <p className="process-story__mobile-card-desc">{currentItem.description}</p>
+
+                {STEP_HIGHLIGHTS[activeStep] ? (
+                  <div className="process-story__mobile-card-highlights">
+                    {STEP_HIGHLIGHTS[activeStep].map((hl) => (
+                      <span className="process-story__mobile-highlight" key={hl}>
+                        <span aria-hidden="true" className="process-story__highlight-check">✓</span>
+                        {hl}
+                      </span>
+                    ))}
+                  </div>
+                ) : null}
 
                 <div className="process-story__mobile-card-nav">
                   <button

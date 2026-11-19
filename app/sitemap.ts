@@ -1,22 +1,36 @@
 import type { MetadataRoute } from "next";
-import { getPosts } from "@/lib/blog";
+import { getAllPosts } from "@/lib/blog";
 import { SITE } from "@/lib/site";
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const origin = SITE.origin;
-  if (!origin) return [];
+  const origin = SITE.origin || "https://zorvaxel.com";
+  const now = new Date();
 
-  const pagePaths = ["/", "/services", "/about", "/blog", "/contact"];
-  const pages: MetadataRoute.Sitemap = pagePaths.map((path) => ({
+  const pageEntries = [
+    { path: "/", changeFrequency: "weekly" as const, priority: 1.0 },
+    { path: "/services", changeFrequency: "weekly" as const, priority: 0.9 },
+    { path: "/about", changeFrequency: "monthly" as const, priority: 0.8 },
+    { path: "/contact", changeFrequency: "monthly" as const, priority: 0.8 },
+    { path: "/blog", changeFrequency: "weekly" as const, priority: 0.8 },
+    { path: "/blog?lang=ta", changeFrequency: "weekly" as const, priority: 0.7 },
+  ];
+
+  const pages: MetadataRoute.Sitemap = pageEntries.map(({ path, changeFrequency, priority }) => ({
     url: new URL(path, origin).toString(),
-    changeFrequency: path === "/blog" ? "weekly" : "monthly",
-    priority: path === "/" ? 1 : path === "/contact" ? 0.8 : 0.7,
+    lastModified: now,
+    changeFrequency,
+    priority,
   }));
-  const posts: MetadataRoute.Sitemap = getPosts().map((post) => ({
-    url: new URL(`/blog/${post.slug}`, origin).toString(),
+
+  const allPosts = getAllPosts();
+  const posts: MetadataRoute.Sitemap = allPosts.map((post) => ({
+    url: new URL(
+      post.lang === "ta" ? `/blog/${post.slug}?lang=ta` : `/blog/${post.slug}`,
+      origin,
+    ).toString(),
     lastModified: new Date(`${post.date}T00:00:00Z`),
     changeFrequency: "monthly",
-    priority: 0.6,
+    priority: 0.7,
   }));
 
   return [...pages, ...posts];

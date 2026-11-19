@@ -4,6 +4,8 @@ import { Carton } from "./Carton";
 import { DropperBottle } from "./DropperBottle";
 import { FillingNozzle } from "./FillingNozzle";
 import { HeroSerumComposition } from "./HeroSerumComposition";
+import { HeroVisual } from "./HeroVisual";
+import { InteractivePackageIllustration } from "./InteractivePackageIllustration";
 import { LabelSheet } from "./LabelSheet";
 import { Vial } from "./Vial";
 
@@ -34,4 +36,14 @@ export function PackageIllustration({
   return createElement(Illustration, props);
 }
 
-export { AirlessPump, Carton, DropperBottle, FillingNozzle, HeroSerumComposition, LabelSheet, Vial };
+export {
+  AirlessPump,
+  Carton,
+  DropperBottle,
+  FillingNozzle,
+  HeroSerumComposition,
+  HeroVisual,
+  InteractivePackageIllustration,
+  LabelSheet,
+  Vial,
+};

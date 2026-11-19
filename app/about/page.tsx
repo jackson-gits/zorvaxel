@@ -1,11 +1,14 @@
 import dynamic from "next/dynamic";
 import { Button } from "@/components/Button";
-import { ImageSlot } from "@/components/ImageSlot";
 import { SectionHeader } from "@/components/SectionHeader";
 import { createPageMetadata } from "@/lib/seo";
 import { SITE } from "@/lib/site";
+import { AboutHeroStats } from "@/components/about/AboutHeroStats";
+import { AboutComparison } from "@/components/about/AboutComparison";
+import { AboutCleanroomSection } from "@/components/about/AboutCleanroomSection";
+import { AboutAudienceGrid } from "@/components/about/AboutAudienceGrid";
+import { ChennaiMapVisual } from "@/components/about/ChennaiMapVisual";
 
-const ProcessSteps = dynamic(() => import("@/components/ProcessSteps").then((module) => module.ProcessSteps));
 const Reveal = dynamic(() => import("@/components/Reveal").then((module) => module.Reveal));
 const RevealItem = dynamic(() => import("@/components/Reveal").then((module) => module.RevealItem));
 
@@ -16,77 +19,99 @@ export const metadata = createPageMetadata({
 });
 
 export default function AboutPage() {
+  const { about } = SITE;
+
   return (
     <main className="page-main about-page" id="main-content">
-      <header className="page-shell page-heading about-heading">
-        <p className="eyebrow">{SITE.about.eyebrow}</p>
-        <h1>{SITE.about.title}</h1>
-        <p className="about-heading__story-label">{SITE.about.storyHeading}</p>
-        <p className="about-heading__story">{SITE.about.story}</p>
+      {/* Chapter 1: Hero Mission */}
+      <header className="page-section about-hero">
+        <div className="page-shell">
+          <p className="eyebrow">{about.eyebrow}</p>
+          <h1 className="about-hero__title">{about.title}</h1>
+          <p className="about-hero__subtitle">{about.subtitle}</p>
+
+          <div className="about-hero__tags">
+            <span className="about-hero__pill">
+              <span className="about-hero__dot" aria-hidden="true" />
+              Direct Bench Access
+            </span>
+            <span className="about-hero__pill">ISO 8 Cleanroom</span>
+            <span className="about-hero__pill">50-Unit Pilot Minimum</span>
+            <span className="about-hero__pill">100% Brand IP Ownership</span>
+          </div>
+        </div>
       </header>
 
+      {/* Chapter 2: The Giant Stats Hero Band (Deep Navy Strip, Cream Numerals) */}
+      <AboutHeroStats />
+
+      {/* Chapter 3: The Problem We Solve (Status Quo vs Zorvaxel Dramatic Comparison) */}
+      <section aria-labelledby="about-origin-title" className="page-section about-origin">
+        <div className="page-shell">
+          <Reveal>
+            <SectionHeader
+              description={about.originDescription}
+              title={about.originHeading}
+              titleId="about-origin-title"
+            />
+          </Reveal>
+
+          <AboutComparison />
+        </div>
+      </section>
+
+      {/* Chapter 4: Cleanroom & Laboratory Standards with Real Photography */}
+      <AboutCleanroomSection />
+
+      {/* Chapter 5: Who We Work With (Differentiated Audience Cards) */}
+      <AboutAudienceGrid />
+
+      {/* Chapter 6: Operating Principles */}
       <section aria-labelledby="about-principles-title" className="page-section about-principles">
         <div className="page-shell">
           <Reveal>
-            <SectionHeader title={SITE.about.principlesHeading} titleId="about-principles-title" />
+            <SectionHeader
+              title={about.principlesHeading}
+              titleId="about-principles-title"
+            />
           </Reveal>
+
           <div className="about-principles__grid">
-            {SITE.about.principles.map((principle) => (
-              <RevealItem className="about-principle" key={principle.number}>
-                <span aria-hidden="true" className="about-principle__number">{principle.number}</span>
-                <h3>{principle.title}</h3>
-                <p>{principle.description}</p>
+            {about.principles.map((principle, i) => (
+              <RevealItem className="about-principle" delay={i * 0.08} key={principle.number}>
+                <span aria-hidden="true" className="about-principle__number tabular-nums">
+                  {principle.number}
+                </span>
+                <h3 className="about-principle__title">{principle.title}</h3>
+                <p className="about-principle__desc">{principle.description}</p>
               </RevealItem>
             ))}
           </div>
         </div>
       </section>
 
-      <section aria-labelledby="about-process-title" className="page-section about-process">
-        <div className="page-shell">
-          <Reveal>
-            <SectionHeader
-              description={SITE.about.processDescription}
-              title={SITE.about.processHeading}
-              titleId="about-process-title"
-            />
-          </Reveal>
-          <ProcessSteps items={SITE.home.process} label={SITE.about.processHeading} />
-        </div>
-      </section>
+      {/* Chapter 7: Chennai Facility & Logistics Hub (Visual Map + Docked Fact Card) */}
+      <ChennaiMapVisual />
 
-      <section aria-labelledby="about-facility-title" className="page-section about-facility">
+      {/* Chapter 8: Deep Closing Call to Action */}
+      <section aria-labelledby="about-closing-title" className="page-section about-closing">
         <div className="page-shell">
-          <Reveal>
-            <SectionHeader title={SITE.about.facilityHeading} titleId="about-facility-title" />
-          </Reveal>
-          <div className="about-facility__grid">
-            <ImageSlot
-              alt={SITE.about.facilityAlt}
-              caption={SITE.about.facilityCaption}
-              imageKey="facility"
-            />
-            <ImageSlot
-              alt={SITE.about.facilityDetailAlt}
-              caption={SITE.about.facilityCaption}
-              imageKey="facilityDetail"
-              sizes="(max-width: 768px) 100vw, 45vw"
-            />
+          <div className="about-closing__inner surface-dark">
+            <Reveal>
+              <p className="eyebrow">{about.closingEyebrow}</p>
+              <h2 id="about-closing-title" className="about-closing__title">
+                {about.closingHeading}
+              </h2>
+              <p className="about-closing__copy">{about.closingCopy}</p>
+              <div className="about-closing__actions">
+                <Button href={SITE.ui.enquireHref}>{about.closingAction}</Button>
+                <a className="about-closing__link" href="/services">
+                  <span>{about.secondaryAction}</span>
+                  <span aria-hidden="true">→</span>
+                </a>
+              </div>
+            </Reveal>
           </div>
-        </div>
-      </section>
-
-      <section aria-labelledby="about-values-title" className="page-section about-values">
-        <div className="page-shell about-values__inner surface-dark">
-          <Reveal>
-            <p className="eyebrow">{SITE.about.valuesEyebrow}</p>
-            <h2 id="about-values-title">{SITE.about.valuesHeading}</h2>
-            <p className="about-values__copy">{SITE.about.valuesCopy}</p>
-            <div className="about-values__action">
-              <p className="about-values__prompt">{SITE.about.closing}</p>
-              <Button href={SITE.ui.enquireHref}>{SITE.about.closingAction}</Button>
-            </div>
-          </Reveal>
         </div>
       </section>
     </main>

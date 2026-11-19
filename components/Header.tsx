@@ -15,30 +15,21 @@ function isActivePath(pathname: string, href: string): boolean {
 export function Header() {
   const pathname = usePathname();
   const [menuOpen, setMenuOpen] = useState(false);
-  const [isHidden, setIsHidden] = useState(false);
-  const previousScroll = useRef(0);
+  const [isScrolled, setIsScrolled] = useState(false);
   const menuToggleRef = useRef<HTMLButtonElement>(null);
+
   const closeMenu = useCallback(() => {
     setMenuOpen(false);
     window.requestAnimationFrame(() => menuToggleRef.current?.focus());
   }, []);
 
   useEffect(() => {
-    const updateVisibility = () => {
-      const currentScroll = window.scrollY;
-      const scrollingDown = currentScroll > previousScroll.current;
-      if (currentScroll < 64) {
-        setIsHidden(false);
-      } else if (scrollingDown && currentScroll - previousScroll.current > 10) {
-        setIsHidden(true);
-      } else if (currentScroll < previousScroll.current - 5) {
-        setIsHidden(false);
-      }
-      previousScroll.current = currentScroll;
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 16);
     };
-
-    window.addEventListener("scroll", updateVisibility, { passive: true });
-    return () => window.removeEventListener("scroll", updateVisibility);
+    handleScroll();
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
   useEffect(() => {
@@ -47,9 +38,10 @@ export function Header() {
 
   return (
     <>
-      <header className={`site-header${isHidden && !menuOpen ? " is-hidden" : ""}`}>
+      <header className={`site-header${isScrolled ? " site-header--scrolled" : ""}`}>
         <div className="page-shell site-header__inner">
           <Wordmark href="/" />
+          
           <nav className="desktop-navigation" aria-label={SITE.ui.mainNavigationLabel}>
             {SITE.navigation.map((item) => {
               const active = isActivePath(pathname, item.href);
@@ -65,27 +57,34 @@ export function Header() {
               );
             })}
             <Link className="nav-link nav-link--enquire" href={SITE.ui.enquireHref}>
-              {SITE.ui.enquire}
+              <span>Batch Enquiry</span>
               <span aria-hidden="true">→</span>
             </Link>
           </nav>
-          <button
-            aria-controls={menuOpen ? "mobile-navigation" : undefined}
-            aria-expanded={menuOpen}
-            aria-label={menuOpen ? SITE.ui.menuClose : SITE.ui.menuOpen}
-            className="menu-toggle"
-            ref={menuToggleRef}
-            onClick={() => setMenuOpen((open) => !open)}
-            type="button"
-          >
-            <span className="menu-toggle__label">
-              {menuOpen ? SITE.ui.menuLabelClose : SITE.ui.menuLabelOpen}
-            </span>
-            <span className={`menu-toggle__mark${menuOpen ? " is-open" : ""}`} aria-hidden="true">
-              <span />
-              <span />
-            </span>
-          </button>
+
+          <div className="site-header__mobile-controls">
+            <Link className="header-sticky-cta" href={SITE.ui.enquireHref}>
+              <span>Batch Enquiry</span>
+              <span aria-hidden="true">→</span>
+            </Link>
+            <button
+              aria-controls={menuOpen ? "mobile-navigation" : undefined}
+              aria-expanded={menuOpen}
+              aria-label={menuOpen ? SITE.ui.menuClose : SITE.ui.menuOpen}
+              className="menu-toggle"
+              ref={menuToggleRef}
+              onClick={() => setMenuOpen((open) => !open)}
+              type="button"
+            >
+              <span className="menu-toggle__label">
+                {menuOpen ? SITE.ui.menuLabelClose : SITE.ui.menuLabelOpen}
+              </span>
+              <span className={`menu-toggle__mark${menuOpen ? " is-open" : ""}`} aria-hidden="true">
+                <span />
+                <span />
+              </span>
+            </button>
+          </div>
         </div>
       </header>
       <MobileMenu open={menuOpen} onClose={closeMenu} />

@@ -1,4 +1,5 @@
 import dynamic from "next/dynamic";
+import { BatchEnquiryFloat } from "@/components/BatchEnquiryFloat";
 import { BlogCard } from "@/components/BlogCard";
 import { Button } from "@/components/Button";
 import { LocalBusinessJsonLd } from "@/components/JsonLd";
@@ -25,7 +26,8 @@ export default function HomePage() {
   const latestPosts = getLatestPosts(3);
 
   return (
-    <main className="page-main" id="main-content">
+    <>
+      <main className="page-main" id="main-content">
       <LocalBusinessJsonLd />
       <HomeHero />
 
@@ -36,8 +38,7 @@ export default function HomePage() {
           <ProcessSteps
             description={SITE.home.processDescription}
             items={SITE.home.process}
-            label={SITE.home.processHeading}
-            number="01"
+            label="Manufacturing process steps"
             title={SITE.home.processHeading}
             titleId="home-process-title"
           />
@@ -46,13 +47,13 @@ export default function HomePage() {
 
       <section aria-labelledby="home-services-title" className="page-section home-services">
         <div className="page-shell">
-          <Reveal as="section" className="home-section-intro">
+          <Reveal className="home-section-intro">
             <SectionHeader title={SITE.home.servicesHeading} titleId="home-services-title" />
             <TextLink href="/services">{SITE.home.servicesLink}</TextLink>
           </Reveal>
           <div className="home-services__list">
-            {SITE.services.items.map((service) => (
-              <RevealItem key={service.number}>
+            {SITE.services.items.map((service, index) => (
+              <RevealItem delay={index * 0.08} key={service.number}>
                 <ServiceRow service={service} />
               </RevealItem>
             ))}
@@ -78,7 +79,11 @@ export default function HomePage() {
             <TextLink href="/blog">{SITE.home.journalLink}</TextLink>
           </Reveal>
           <div className="home-notes__list">
-            {latestPosts.map((post) => <BlogCard key={post.slug} post={post} />)}
+            {latestPosts.map((post, index) => (
+              <RevealItem delay={index * 0.08} key={post.slug}>
+                <BlogCard post={post} />
+              </RevealItem>
+            ))}
           </div>
         </div>
       </section>
@@ -95,6 +100,8 @@ export default function HomePage() {
           <span aria-hidden="true" className="home-closing__line" />
         </div>
       </section>
-    </main>
+      </main>
+      <BatchEnquiryFloat />
+    </>
   );
 }
