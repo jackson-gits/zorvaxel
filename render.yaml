@@ -14,7 +14,7 @@ services:
 
     envVars:
       - key: NODE_VERSION
-        value: 20.18.0
+        value: 22.12.0
 
       # Server-side Resend API credentials
       # Set 'sync: false' so secret values are configured in the Render Dashboard
