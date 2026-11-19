@@ -92,18 +92,18 @@ export const SITE = {
       workingHours: "Working hours",
     },
     phone: {
-      label: "+91 44 2827 9100",
-      href: "tel:+914428279100",
+      label: "+91 81444 51947",
+      href: "tel:+918144451947",
     },
     email: {
       label: "lab@zorvaxel.com",
       href: "mailto:lab@zorvaxel.com",
     },
     whatsapp: {
-      label: "+91 98400 12840",
-      number: "919840012840",
+      label: "+91 81444 51947",
+      number: "918144451947",
     },
-    address: "Plot 14, SIDCO Industrial Estate, Guindy, Chennai, Tamil Nadu 600032",
+    address: "13/1, Varada Raja Perumal Koil Street, Tondiarpet, Chennai, Tamil Nadu 600081",
     workingHours: "Mon – Fri: 9:00 AM – 6:30 PM IST · Sat: 9:00 AM – 1:30 PM IST",
   },
   footer: {

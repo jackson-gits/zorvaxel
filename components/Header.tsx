@@ -63,10 +63,6 @@ export function Header() {
           </nav>
 
           <div className="site-header__mobile-controls">
-            <Link className="header-sticky-cta" href={SITE.ui.enquireHref}>
-              <span>Batch Enquiry</span>
-              <span aria-hidden="true">→</span>
-            </Link>
             <button
               aria-controls={menuOpen ? "mobile-navigation" : undefined}
               aria-expanded={menuOpen}

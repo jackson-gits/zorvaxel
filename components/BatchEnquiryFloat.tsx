@@ -8,6 +8,7 @@ import { useForm, type FieldErrors } from "react-hook-form";
 import type { z } from "zod";
 import { enquirySchema, type EnquiryInput } from "@/lib/contact-schema";
 import { SITE } from "@/lib/site";
+import { lockScroll, unlockScroll } from "@/lib/motion/scroll-lock";
 
 type EnquiryFormValues = z.input<typeof enquirySchema>;
 
@@ -31,6 +32,7 @@ export function BatchEnquiryFloat() {
 
   const [mounted, setMounted] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
   const [footerInView, setFooterInView] = useState(false);
   const [submitted, setSubmitted] = useState(false);
   const [formError, setFormError] = useState("");
@@ -66,6 +68,11 @@ export function BatchEnquiryFloat() {
   useEffect(() => {
     setMounted(true);
 
+    const mq = window.matchMedia("(max-width: 760px)");
+    setIsMobile(mq.matches);
+    const handleMq = (e: MediaQueryListEvent) => setIsMobile(e.matches);
+    mq.addEventListener("change", handleMq);
+
     // Open automatically only on wide desktop viewports (>= 1024px) where the
     // left-aligned hero copy and bottom-right card have zero overlap.
     try {
@@ -91,9 +98,24 @@ export function BatchEnquiryFloat() {
     if (footer && footerObserver) footerObserver.observe(footer);
 
     return () => {
+      mq.removeEventListener("change", handleMq);
       footerObserver?.disconnect();
     };
   }, []);
+
+  // Lock body scroll and pause smooth scroll on mobile while the sheet is open
+  useEffect(() => {
+    if (!isOpen || !isMobile) return;
+
+    const prevOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    lockScroll();
+
+    return () => {
+      document.body.style.overflow = prevOverflow;
+      unlockScroll();
+    };
+  }, [isOpen, isMobile]);
 
   const handleClose = useCallback(() => {
     setIsOpen(false);
@@ -123,6 +145,14 @@ export function BatchEnquiryFloat() {
     if (shouldFocusNameOnOpenRef.current) {
       shouldFocusNameOnOpenRef.current = false;
       window.requestAnimationFrame(() => {
+        if (isMobile) {
+          // On mobile, focus the close button instead of an input field.
+          // This avoids immediately forcing open the virtual keyboard, which
+          // would obscure the sheet title and header before the user can read it.
+          const closeBtn = document.querySelector<HTMLElement>(".batch-float__close");
+          closeBtn?.focus();
+          return;
+        }
         const firstInput = document.getElementById("quick-batch-name");
         if (firstInput instanceof HTMLElement) {
           firstInput.focus();
@@ -139,7 +169,7 @@ export function BatchEnquiryFloat() {
 
     document.addEventListener("keydown", onKeyDown);
     return () => document.removeEventListener("keydown", onKeyDown);
-  }, [isOpen, handleClose]);
+  }, [isOpen, handleClose, isMobile]);
 
   const errorItems = FIELD_ORDER.reduce<Array<{ id: string; message: string }>>(
     (acc, field) => {
@@ -155,6 +185,10 @@ export function BatchEnquiryFloat() {
   function onInvalid(_fieldErrors: FieldErrors<EnquiryFormValues>) {
     setHasFailedSubmit(true);
     window.requestAnimationFrame(() => {
+      const bodyEl = document.querySelector<HTMLElement>(".batch-float__body");
+      if (bodyEl) {
+        bodyEl.scrollTo({ top: 0, behavior: "smooth" });
+      }
       errorSummaryRef.current?.focus();
     });
   }
@@ -194,21 +228,35 @@ export function BatchEnquiryFloat() {
         animate: { opacity: 1 },
         exit: { opacity: 0, transition: { duration: 0.01 } },
       }
-    : {
-        initial: { opacity: 0, y: 12, scale: 0.97 },
-        animate: {
-          opacity: 1,
-          y: 0,
-          scale: 1,
-          transition: { duration: 0.18, ease: [0.16, 1, 0.3, 1] as const },
-        },
-        exit: {
-          opacity: 0,
-          y: 8,
-          scale: 0.97,
-          transition: { duration: 0.12, ease: [0.4, 0, 1, 1] as const },
-        },
-      };
+    : isMobile
+      ? {
+          initial: { opacity: 0, y: "100%" },
+          animate: {
+            opacity: 1,
+            y: 0,
+            transition: { duration: 0.28, ease: [0.16, 1, 0.3, 1] as const },
+          },
+          exit: {
+            opacity: 0,
+            y: "100%",
+            transition: { duration: 0.2, ease: [0.4, 0, 1, 1] as const },
+          },
+        }
+      : {
+          initial: { opacity: 0, y: 12, scale: 0.97 },
+          animate: {
+            opacity: 1,
+            y: 0,
+            scale: 1,
+            transition: { duration: 0.18, ease: [0.16, 1, 0.3, 1] as const },
+          },
+          exit: {
+            opacity: 0,
+            y: 8,
+            scale: 0.97,
+            transition: { duration: 0.12, ease: [0.4, 0, 1, 1] as const },
+          },
+        };
 
   const pillMotion = reduceMotion
     ? {
@@ -233,23 +281,44 @@ export function BatchEnquiryFloat() {
       };
 
   return createPortal(
-    <div
-      className={`batch-float${footerInView ? " batch-float--docked" : ""}${
-        isOpen ? " batch-float--open" : ""
-      }`}
-    >
-      <AnimatePresence mode="wait">
-        {isOpen ? (
-          <motion.section
-            key="batch-panel"
-            aria-labelledby="batch-float-title"
-            aria-modal="false"
-            className="batch-float__card"
-            id="batch-float-panel"
-            role="dialog"
-            {...panelMotion}
-          >
-            <header className="batch-float__header">
+    <>
+      <AnimatePresence>
+        {isOpen && isMobile ? (
+          <motion.div
+            aria-hidden="true"
+            className="batch-float__backdrop"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.2 }}
+            onClick={handleClose}
+          />
+        ) : null}
+      </AnimatePresence>
+      <div
+        className={`batch-float${footerInView ? " batch-float--docked" : ""}${
+          isOpen ? " batch-float--open" : ""
+        }`}
+      >
+        <AnimatePresence mode="wait">
+          {isOpen ? (
+            <motion.section
+              key="batch-panel"
+              aria-labelledby="batch-float-title"
+              aria-modal={isMobile ? "true" : "false"}
+              className="batch-float__card"
+              id="batch-float-panel"
+              role="dialog"
+              {...panelMotion}
+            >
+              <div
+                className="batch-float__handle-bar"
+                aria-hidden="true"
+                onClick={handleClose}
+              >
+                <span className="batch-float__handle" />
+              </div>
+              <header className="batch-float__header">
               <div className="batch-float__header-copy">
                 <p className="batch-float__eyebrow">
                   <span className="batch-float__status-dot" aria-hidden="true" />
@@ -620,7 +689,8 @@ export function BatchEnquiryFloat() {
           </motion.button>
         )}
       </AnimatePresence>
-    </div>,
+    </div>
+    </>,
     document.body,
   );
 }

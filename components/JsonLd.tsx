@@ -26,8 +26,10 @@ export function LocalBusinessJsonLd() {
     description: SITE.shortDescription,
     address: {
       "@type": "PostalAddress",
+      streetAddress: "13/1, Varada Raja Perumal Koil Street, Tondiarpet",
       addressLocality: "Chennai",
       addressRegion: "Tamil Nadu",
+      postalCode: "600081",
       addressCountry: "IN",
     },
     ...(phone ? { telephone: phone } : {}),

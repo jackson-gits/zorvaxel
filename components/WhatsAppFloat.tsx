@@ -9,6 +9,7 @@ export function WhatsAppFloat() {
   const [formInView, setFormInView] = useState(false);
   const [fieldFocused, setFieldFocused] = useState(false);
   const [footerInView, setFooterInView] = useState(false);
+  const [batchOpen, setBatchOpen] = useState(false);
 
   const isArticlePage = pathname.startsWith("/blog/") && pathname !== "/blog";
 
@@ -26,6 +27,25 @@ export function WhatsAppFloat() {
         })
       : null;
     if (footer && footerObserver) footerObserver.observe(footer);
+
+    const checkBatchOpen = () => {
+      const isMobile = window.matchMedia("(max-width: 760px)").matches;
+      const isOpen = Boolean(document.querySelector(".batch-float--open"));
+      setBatchOpen(isMobile && isOpen);
+    };
+
+    checkBatchOpen();
+    const batchObserver = new MutationObserver(checkBatchOpen);
+    batchObserver.observe(document.body, {
+      attributes: true,
+      childList: true,
+      subtree: true,
+      attributeFilter: ["class"],
+    });
+
+    const mq = window.matchMedia("(max-width: 760px)");
+    const onMqChange = () => checkBatchOpen();
+    mq.addEventListener("change", onMqChange);
 
     const shouldHideForTarget = (node: EventTarget | null) => {
       if (!(node instanceof Element)) return false;
@@ -47,6 +67,8 @@ export function WhatsAppFloat() {
     return () => {
       formObserver?.disconnect();
       footerObserver?.disconnect();
+      batchObserver.disconnect();
+      mq.removeEventListener("change", onMqChange);
       document.removeEventListener("focusin", onFocusIn);
       document.removeEventListener("focusout", onFocusOut);
     };
@@ -62,7 +84,7 @@ export function WhatsAppFloat() {
         isArticlePage ? " whatsapp-float--article" : ""
       }`}
       href={href}
-      hidden={formInView || fieldFocused}
+      hidden={formInView || fieldFocused || batchOpen}
       rel="noreferrer"
       target="_blank"
     >
